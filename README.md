@@ -30,6 +30,7 @@ Our Romi utilizes cooperative multitasking to cycle between relevant tasks at as
 [
 [
 [
+]]]]
 It should be noted that improvements to this program structure such as combining tasks or altering priorities and frequencies have been discussed. However, with the expedited timeline of this project, we have attempted to optimize Romi on Track Speed and Reliability. Improvements to Microcontroller efficiency or negligible improvements on track speed a program restructure may have are deemed out of our scope.
 
 
