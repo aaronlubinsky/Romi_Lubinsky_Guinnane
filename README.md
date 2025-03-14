@@ -101,5 +101,6 @@ While we are satisfied with the Romi's performance on the track, we
 ## Video Demonstration
 Below is a video of the Romi's final trial run. Our final raw running time was 38.10 seconds. Including the single cup hit at the end, the final processed time of our Romi bot is 33.10 seconds.
 
+Click the thumbnail to watch the video
 [![Video of Trial Run](https://img.youtube.com/vi/gykSGYLJhhQ/0.jpg)](https://www.youtube.com/watch?v=gykSGYLJhhQ)
 
