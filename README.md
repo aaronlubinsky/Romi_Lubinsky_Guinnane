@@ -14,11 +14,9 @@ Rev. Mar 13, 2025
 ## Romi Design
 
 To complete the obstacle course, we outfitted our Romi bot with a Pololu IR reflectance sensor to follow the lines on the track, an Adafruit BNO055 IMU to help the Romi drive straight in its current heading or turn to face a new heading, and a Pololu bump sensor to detect when the Romi has hit the wall. In addition to these sensors, the Romi was equipped with a HC-05 Bluetooth module to enable wireless operation of the Romi bot. Later on in the project, a circuit was added to the Romi to read the robot's battery voltage.
-
 To implement our 
-### Wiring Diagram
-Below is the final revision of our wiring diagram of our Nucleo Board.
-![image](https://github.com/user-attachments/assets/8ae91c52-fd46-442b-8d40-f865ef19f9c3)
+All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points between the IR and bump sensors, making 3D-printing a custom adapter unnecessary.
+
 
 ### Bill of Materials
 | Item | Quantity | Source|
@@ -35,6 +33,19 @@ Below is the final revision of our wiring diagram of our Nucleo Board.
 | Adafruit BNO055 Absolute Orientation Sensor | 1 | Instructor Provided |
 | HC-05 Wirelesss Bluetooth Module | 1 | [Amazon](https://www.amazon.com/dp/B01MQKX7VP)<br> |
 
+
+
+
+### IR Reflectance Sensor
+For our project, we used the Pololu 
+
+### Bump Sensor
+
+### 
+
+### Wiring Diagram
+Below is the final revision of our wiring diagram of our Nucleo Board.
+![image](https://github.com/user-attachments/assets/8ae91c52-fd46-442b-8d40-f865ef19f9c3)
 
 ## Program Design and Structure
 Our Romi utilizes cooperative multitasking to cycle between relevant tasks at assigned intervals, with priorities assigned to each Task. The tasks are executed using JR Ridgley's task scheduler, cotask.py, and share module, task_share.py. Our final Romi program is the result of 9 weeks of growing complexity. Though, when it was first implemented six weeks ago, it was much simpler. In this early stage, only three tasks existed: Left Motor, Right Motor, and UI tasks. However as more difficult challenges were attempted, Romi's multitasking routine grew to include an IR task for tracking lines, IMU tasks for orienting and tracking the robot, and two tasks for navigating the course and commanding its movement. The following outlines the tasks Romi is executing.
@@ -57,8 +68,34 @@ Our Romi utilizes cooperative multitasking to cycle between relevant tasks at as
 ]]]]
 It should be noted that improvements to this program structure such as combining tasks or altering priorities and frequencies have been discussed. However, with the expedited timeline of this project, we have attempted to optimize Romi on Track Speed and Reliability. Improvements to Microcontroller efficiency or negligible improvements on track speed a program restructure may have are deemed out of our scope.
 
+## Classes
+
+*Bump
+
+*Motor
+
+*Encoder
+
+*IMUDriver
+
+## Tasks
+
+* UITask.py
+This task is responsibe for handling all REPL input for the romi as well as initializing the UART protocol for the HC-05 Bluetooth module. In our final implementation of our obstacle course
+
+* MotorTask.py
+
+* IRTask.py
+
+* BrainsTask.py
+This task is responsible for handling all of the important track logic as well as switching between driving modes.
+
+* IMUTask.py
 
 
+## Conclusion
+
+While we are satisfied with the Romi's performance on the track, we 
 
 
 ## Video Demonstration
