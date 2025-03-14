@@ -93,7 +93,7 @@ It should be noted that improvements to this program structure such as combining
 This task is responsibe for handling all REPL input for the romi as well as initializing the UART protocol for the HC-05 Bluetooth module. In our final implementation of our obstacle course
 
 * MotorTask.py
-
+This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal.
 * IRTask.py
 
 * BrainsTask.py
