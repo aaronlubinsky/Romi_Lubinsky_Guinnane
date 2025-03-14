@@ -7,7 +7,6 @@ Rev. Mar 13, 2025
 
 ## Table of Contents
 [Romi Design](#romi-design)<br>
-    [Romi Design](#romi-design)<br>
 [Program Design and Structure](#program-design-and-structure)<br>
 [Video Demonstration](#video-demonstration)<br>
 
