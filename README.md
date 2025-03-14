@@ -13,7 +13,10 @@ Rev. Mar 13, 2025
 ## Romi Design
 
 To complete the obstacle course, we outfitted our Romi bot with a Pololu IR reflectance sensor to follow the lines on the track, an Adafruit BNO055 IMU to help the Romi drive straight in its current heading or turn to face a new heading, and a Pololu bump sensor to detect when the Romi has hit the wall. In addition to these sensors, the Romi was equipped with a HC-05 Bluetooth module to enable wireless operation of the Romi bot. Later on in the project, a circuit was added to the Romi to read the robot's battery voltage.
-To implement our 
+To implement our
+
+![20250314_120230](https://github.com/user-attachments/assets/d6e9c733-55c5-4a1c-8662-09e5068ae85e)
+
 All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points between the IR and bump sensors, making 3D-printing a custom adapter unnecessary.
 
 
@@ -36,11 +39,18 @@ All of the sensors are mounted on the front of the Romi using standoffs due to c
 
 
 ### IR Reflectance Sensor
-For our project, we used the Pololu 
+![image](https://a.pololu-files.com/picture/0J9136.600x480.jpg?21d47be8d4bfa4f6d290741354a839ba)
+
+To follow the lines on the obstacle course, we used the Pololu QTR-MD-08A Reflectance Sensor Array. We chose this sensor 
+While it can easily keep track of wide turns on the obstacle course, testing revealed that the small size of the sensor was limiting how fast we could take sharp corners, especially at the start of the course.
+
 
 ### Bump Sensor
+![image](https://a.pololu-files.com/picture/0J10203.600x480.jpg?793c0b893bd0ac5f64733eee603cd0fd)
+To allow our robot to detect bumping the wall at the end of the course, a pair of pololu bump sensors were utilized.
 
-### 
+### BNO055 IMU
+
 
 ### Wiring Diagram
 Below is the final revision of our wiring diagram of our Nucleo Board.
@@ -88,6 +98,11 @@ This task is responsibe for handling all REPL input for the romi as well as init
 
 * BrainsTask.py
 This task is responsible for handling all of the important track logic as well as switching between driving modes.
+Track logic is handled by breaking the track up into 16 sections
+
+
+For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
+![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
 
 * IMUTask.py
 
@@ -101,5 +116,6 @@ While we are satisfied with the Romi's performance on the track, we
 Below is a video of the Romi's final trial run. Our final raw running time was 38.10 seconds. Including the single cup hit at the end, the final processed time of our Romi bot is 33.10 seconds.
 
 Click the thumbnail to watch the video
+
 [![Video of Trial Run](https://img.youtube.com/vi/gykSGYLJhhQ/0.jpg)](https://www.youtube.com/watch?v=gykSGYLJhhQ)
 
