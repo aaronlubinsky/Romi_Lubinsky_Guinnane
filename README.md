@@ -56,6 +56,9 @@ To allow our robot to detect bumping the wall at the end of the course, a pair o
 Below is the final revision of our wiring diagram of our Nucleo Board.
 ![image](https://github.com/user-attachments/assets/8ae91c52-fd46-442b-8d40-f865ef19f9c3)
 
+To detect the Battery Level, the following circuit is constructed and read through ADC on PB0
+![image](https://github.com/user-attachments/assets/ddb3f303-de24-415e-a98e-016d3c0fde83)
+
 ## Program Design and Structure
 Our Romi utilizes cooperative multitasking to cycle between relevant tasks at assigned intervals, with priorities assigned to each Task. The tasks are executed using JR Ridgley's task scheduler, cotask.py, and share module, task_share.py. Our final Romi program is the result of 9 weeks of growing complexity. Though, when it was first implemented six weeks ago, it was much simpler. In this early stage, only three tasks existed: Left Motor, Right Motor, and UI tasks. However as more difficult challenges were attempted, Romi's multitasking routine grew to include an IR task for tracking lines, IMU tasks for orienting and tracking the robot, and two tasks for navigating the course and commanding its movement. The following outlines the tasks Romi is executing.
 
