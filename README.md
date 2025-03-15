@@ -67,7 +67,7 @@ Our Romi utilizes cooperative multitasking to cycle between relevant tasks at as
 | Task | Number | Priority | Period | Description |
 |---|---|---| --- | --- |
 | UITaskObj.UI |1|1|200|Handles UI functionality of Romi| 
-| LeftMotorTaskObj.drive |2| 1 |10 |Handles Effort input to the left motor|
+| LeftMotorTaskObj.drive |2| 4 |10 |Handles Effort input to the left motor|
 | RightMotorTaskObj.drive |3| 4 |10 |Handles Effort input to the right motor|
 | IRTaskObj.getIRArray | 4| 5 |50 |Frequently returns data from the IR sensor array |
 | BrainsTaskObj.run |5 | 2 |50 |Handles the driving mode PID loops driving the |
