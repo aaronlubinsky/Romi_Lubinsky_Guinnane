@@ -96,7 +96,7 @@ This task is responsibe for handling all REPL input for the romi as well as init
 This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal.
 * IRTask.py
 
-* BrainsTask.py
+[* BrainsTask.py]([url](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/BrainsTask.py))
 This task is responsible for handling all of the important track logic as well as switching between driving modes.
 Track logic is handled by breaking the track up into 16 sections
 
