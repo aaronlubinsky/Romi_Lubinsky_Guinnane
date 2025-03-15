@@ -30,9 +30,10 @@ class UITask:
     def UI(self, shares):
         
         # Get references to the share and queue which have been passed to this task
-        L_vel_set, R_vel_set , the_queue, IR_centroid, romiSetSpeed, Heading = shares
+        L_vel_set, R_vel_set , UI_stop, the_queue, IR_centroid, IRSum, romiSetSpeed, Heading, AngularVelo, distTraveled = shares
         T1state = 0
-        
+        UI_stop.put(True)
+        print(f" UI Task put UI_stop to True")
         while True:
             
             '''Init State does nothing. Use later in init is neccesasary'''
@@ -48,16 +49,16 @@ class UITask:
                 if toggle == 0: #if romi is currently off
                     if self.nb_in.any () or self.bt_in.any ():#and button is hit
 
-                        romiSetSpeed.put(self.speed)
-                        print('speed set to 30')                        
+                        UI_stop.put(False)
+                        print('UI SAYS GOOOOOOOO')                        
                         self.nb_in.get()
                         self.bt_in.read()
     
                         toggle = 1
                 elif self.nb_in.any () or self.bt_in.any (): #if romi is currently on and button is hit
                     #self.IMU.get_calcoef()   
-                    romiSetSpeed.put(0)
-                    print('SPEED ---> 0')
+                    UI_stop.put(True)
+                    print('UI SAYS -------STOP----------')
                     self.nb_in.get()
                     self.bt_in.read()
                     toggle = 0

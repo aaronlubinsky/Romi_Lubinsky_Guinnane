@@ -22,11 +22,8 @@ class MotorTask:
         
 
     def drive(self, shares):
-
-         # Main control loop for the motor.
-        # Implements a PID loop to adjust motor effort based on desired and actual velocity.
-        
-        L_vel_set, R_vel_set , the_queue, IR_centroid, romiSetSpeed, dist_travelled, Heading = shares
+        # Get references to the share and queue which have been passed to this task
+        L_vel_set, R_vel_set , UI_stop, the_queue, IR_centroid, IRSum, romiSetSpeed, Heading, AngularVelo, distTraveled = shares
         while True:
             if self.T2state == 0: #run once. create the motor and encoder objects
 
@@ -52,7 +49,7 @@ class MotorTask:
                 else:
                     print("Motor Task not Assosciated with L or R motor")
 
-                '''This is the operating state of the motor task. PID loop'''
+                '''This is the operating state of the motor task. It is essentiall a PID loop'''
                 #Read encoder
                 self.Encoder.update()
                 try:
@@ -60,7 +57,7 @@ class MotorTask:
                     self.pos = self.Encoder.get_position()
                     
                     if self.task_label in {'L', 'Left', 'Left Motor'}:
-                        dist_travelled.put(int(self.pos/1440))
+                        distTraveled.put(float(self.pos/1440))
                     
                     #print(self.pos)
                     self.vel = float(self.Encoder.get_velocity())

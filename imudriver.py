@@ -15,12 +15,14 @@ MAG_OFFSET_Z_LB = 0x59  # Low byte of magnetometer Z offset
 MAG_OFFSET_Z_HB = 0x5A  # High byte of magnetometer Z offset
 EUL_DATA_LSB = 0x1A
 ACC_OFFSET_X_LSB = 0x55
+GYR_DATA_Z_LSB = 0x18
 
 
 class IMUDriver:
-    '''This Class'''
+    '''This Class initializes the BNO055 IMU, sets its operating mode, and reads data from the device.'''
     
     def __init__(self):  
+        '''Initializes IMU with I2C Protocol'''
         #filelist =listdir()
         self.I2C = I2C(2, I2C.CONTROLLER, baudrate = 400000)
         sleep(1) #allow time to create I2C      
@@ -55,6 +57,7 @@ class IMUDriver:
         '''
        
     def opmode(self,mode):
+        '''Sets the operating mode of the IMU'''
         try:
             if mode == 0:
                 self.I2C.mem_write(0b0000, BNO055_I2C_ADDR, BNO055_OP_MODE_REG)
@@ -83,7 +86,8 @@ class IMUDriver:
             print("Error: Invalid BNO055 Mode!")
             
     def calstatus(self):
-
+        '''Reads the calibration bits for System, Gyrometer, Accelerometer, 
+        and Magnetometer'''
         buf = bytes(self.I2C.mem_read(1,BNO055_I2C_ADDR, BNO055_CALSTATUS))#read the cal status byte
         buf_int = int.from_bytes(buf, 'little')  # Convert bytes to integer
         print(f"Calibration Status: {buf_int:08b}")  # Print as 8-bit binary
@@ -103,6 +107,7 @@ class IMUDriver:
             return 0
 
     def get_calcoef(self):
+        '''Reads the calibration constants for all 3 sensors in the IMU'''
         self.opmode(0)
         self.offset_data = bytes(self.I2C.mem_read(18,BNO055_I2C_ADDR, ACC_OFFSET_X_LSB))
         #extract values from offset register
@@ -131,7 +136,7 @@ class IMUDriver:
 
     
     def write_calcoef(self):
-
+        '''Writes new calibration coefficient to accociated register'''
         self.get_calcoef()
         if len(self.offset_data) != 18:
             raise ValueError("Offset data must be exactly 18 bytes")
@@ -147,24 +152,22 @@ class IMUDriver:
         
 
     def get_eangle(self):
+        '''Returns Euler angles from corresponding register in IMU'''
         EUL_Data= bytes(self.I2C.mem_read(6, BNO055_I2C_ADDR, EUL_DATA_LSB)) #just z of euler angle
         EULER_Heading = int.from_bytes(EUL_Data[0:2], 'little', True)
-        EULER_Roll =    int.from_bytes(EUL_Data[2:4], 'little', True)
-        EULER_Pitch =   int.from_bytes(EUL_Data[4:6], 'little', True)
+        # EULER_Roll =    int.from_bytes(EUL_Data[2:4], 'little', True)
+        # EULER_Pitch =   int.from_bytes(EUL_Data[4:6], 'little', True)
+        EULER_Heading = struct.unpack('<hhh', EUL_Data)[0]  
         #print(f" Heading={EULER_Heading}, Roll={EULER_Roll}, Pitch={EULER_Pitch}")
         return EULER_Heading
     
     def get_angvelocity(self):
-        #Skeleton Code- will test later
-        self.now = ticks_us()
-        self.dt = ticks_diff(self.now,self.prev_ticks)
-        self.delta = self.timer.counter() - self.prev_count        
-        
-        self.Ang_Vel = self.get_eangle()-self.EULER_Heading_prev
-        
-        self.EULER_Heading_prev = self.get_eangle()
-        
-        return self.Ang_Vel
-        #pass
+        '''Returns angular velocity from corresponding register in IMU'''
+        GYR_DATA = self.I2C.mem_read(2, BNO055_I2C_ADDR, GYR_DATA_Z_LSB)  # Read 2 byte
+        #Unpack as a signed 16-bit little-endian integer
+        GYRO_Z = struct.unpack('<h', GYR_DATA)[0]  
+        #print(f"Gyro Z: {GYRO_Z}")
+        return GYRO_Z
+      
 
   

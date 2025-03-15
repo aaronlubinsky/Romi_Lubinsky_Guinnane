@@ -23,21 +23,20 @@ if __name__ == "__main__":
     #Share & Queues----------
     Left_Vel_instr = task_share.Share('h', thread_protect=False, name="Left Vel")
     Right_Vel_instr = task_share.Share('h', thread_protect=False, name="Right Vel")
+    UI_stop = task_share.Share('h', thread_protect=False, name="Hard Stop")
     romiState = task_share.Queue('L', 16, thread_protect=False, overwrite=False,
                           name="Romi State")
-    IR_Centroid = task_share.Share('h', thread_protect=False, name="Share 0")
-    romiSetSpeed = task_share.Share('h', thread_protect=False, name="Share 0")
-    Heading = task_share.Share('h', thread_protect=False, name="Share 0")
+    IR_Centroid = task_share.Share('h', thread_protect=False, name="IR centroid")
+    IR_sum = task_share.Share('f', thread_protect=False, name="IR sum")
+    romiSetSpeed = task_share.Share('h', thread_protect=False, name="Romi Set Speed")
+    Heading = task_share.Share('h', thread_protect=False, name="Heading")
+    AngularVelo = task_share.Share('h', thread_protect=False, name="Angular Velocity")
+    distTraveled = task_share.Share('f', thread_protect=False, name="Distance Share")
     #---------set parameter for testing
     speed = 15
     #speed = int(input('Press enter for speed'))
-    Kp_brain = 0.60
-    #Kp_brain = float(input('Press ENTER for Kp'))
-    Ki_brain = 0.0
-    #Ki_brain = float(input('Press ENTER for Ki'))
-    Kd_brain = 0
-    #Kd_brain = float(input('Press ENTER for Kd'))
-    
+
+        
     #Task Objects------------
     UITaskObj = UITask.UITask("Task1 - UI", speed)
     LeftMotorTaskObj = MotorTask.MotorTask("Left Motor", chan=1, PWM=pyb.Pin.cpu.B4, DIR=pyb.Pin.cpu.B3,
@@ -50,32 +49,49 @@ if __name__ == "__main__":
     IMUTaskObj =IMUTask.IMUTask("Task 6 - IMU")
 
 
-    BrainsTaskObj = BrainsTask.Brains("Task 5 - Brains", Kp_brain, Ki_brain, Kd_brain)
-    #cotask objects----------
+    BrainsTaskObj = BrainsTask.Brains("Task 5 - Brains")
+    #cotask objects----------L_vel_set, R_vel_set , UI_stop, the_queue, IR_centroid, IRSum, romiSetSpeed, Heading, AngularVelo, distTraveled
     task1 = cotask.Task(UITaskObj.UI, name="Task_1", priority=1, period=200,
                         profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
-                        romiState, IR_Centroid, romiSetSpeed, Heading))
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))
     task2 = cotask.Task(LeftMotorTaskObj.drive, name="Task_2", priority=4, period=10,
                         profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
-                        romiState, IR_Centroid, romiSetSpeed, Heading))
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))
     task3 = cotask.Task(RightMotorTaskObj.drive, name="Task_3", priority=5, period=10,
                         profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
-                        romiState, IR_Centroid, romiSetSpeed, Heading))
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))
     task4 = cotask.Task(IRTaskObj.getIRArray, name="Task_4", priority=2, period=50,
                         profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
-                        romiState, IR_Centroid, romiSetSpeed, Heading))
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))
     task5 = cotask.Task(BrainsTaskObj.run, name="Task_5", priority=3, period=50,
                         profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
-                        romiState, IR_Centroid, romiSetSpeed, Heading))
-    task6 = cotask.Task(IMUTaskObj.EulerAngle, name="Task_6", priority=3, period=50,
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))
+    task6 = cotask.Task(BrainsTaskObj.track, name="Task_6", priority=3, period=50,
                         profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
-                        romiState, IR_Centroid, romiSetSpeed, Heading))
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))
+    task7 = cotask.Task(IMUTaskObj.EulerAngle, name="Task_7", priority=3, period=50,
+                        profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))
+    task8 = cotask.Task(IMUTaskObj.AngularVelo, name="Task_8", priority=3, period=50,
+                        profile=True, trace=False, shares=(Left_Vel_instr, Right_Vel_instr,
+                                                           UI_stop, romiState, IR_Centroid, IR_sum,
+                                                            romiSetSpeed, Heading, AngularVelo, distTraveled))  
     cotask.task_list.append(task1)
     cotask.task_list.append(task2)
     cotask.task_list.append(task3)
     cotask.task_list.append(task4)
     cotask.task_list.append(task5)
     cotask.task_list.append(task6)
+    cotask.task_list.append(task7)
+    cotask.task_list.append(task8)
+
 
     # If trace is enabled for any task, memory will be
     # allocated for state transition tracing, and the application will run out
@@ -98,8 +114,10 @@ if __name__ == "__main__":
         time.sleep_us(10000)
     '''
     
-    
-    
+
+
+
+
     while True:
         try:
             #print('scheduler looped')
