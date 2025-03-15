@@ -3,7 +3,8 @@ ME405 Term Project
 
 
 W25 Cal Poly ME405
-Rev. Mar 13, 2025
+
+Rev. Mar 15, 2025
 
 ## Table of Contents
 [Romi Design](#romi-design)<br>
@@ -47,7 +48,8 @@ While it can easily keep track of wide turns on the obstacle course, testing rev
 
 ### Bump Sensor
 ![image](https://a.pololu-files.com/picture/0J10203.600x480.jpg?793c0b893bd0ac5f64733eee603cd0fd)
-To allow our robot to detect bumping the wall at the end of the course, a pair of pololu bump sensors were utilized.
+
+To allow our robot to detect bumping the wall at the end of the course, a pair of pololu bump sensors were utilized. While all 3 sensors on each units were originally planned to be implemented, testing found that having the front sensor working worked just fine as it was.
 
 ### BNO055 IMU
 
@@ -80,16 +82,6 @@ It should be noted that improvements to this program structure such as combining
 The task diagram for these tasks is shown below.
 ![image](https://github.com/user-attachments/assets/94ed56c8-0b22-479b-9822-d6769d87d905)
 
-## Classes
-
-*Bump
-
-*Motor
-
-*Encoder
-
-*IMUDriver
-
 ## Tasks
 
 * UITask.py
@@ -108,11 +100,26 @@ For ease of reference, a diagram of the obstacle course and corresponding checkp
 ![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
 
 * IMUTask.py
+This task is responsible ofr handling 
 
+
+## Classes
+
+* Bump
+  This class handles bump sensor functionality. It initializes the pins used for both left and right sensors and toggles bstate if the bump sensor is pressed during an update.
+  
+* Motor
+   This class acts as a motor driver for the Romi bot. It initializes the timer of the PWM channels as well as the pins for SLP,DIR, and PWM, as well as setting the effort of the motor based on an input between -100 and 100.
+
+* Encoder
+  This class acts as a driver and quadrature decoder for the encoders on the Romi motor. It initializes the encoder timer and pins for channels A and B, and calculates current velocity and position every update step.
+
+* IMUDriver
+  This class acts as the driver for the BNO055 IMU. It initializes the IMU using the I2C protocol, and sets its operation mode to NDOF_FMC_OFF_MODE upon startup. It also returns the system calibration status bytes, Euler heading, and angular velocity about the Z axis.
 
 ## Conclusion
 
-While we are satisfied with the Romi's performance on the track, we 
+While we are satisfied with the Romi's performance on the track, there are still a lot of improvements that can be made to help the robot run more reliably. For instance, A major issue with the Romi bot was that 
 
 
 ## Video Demonstration
