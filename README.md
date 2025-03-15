@@ -85,36 +85,45 @@ The task diagram for these tasks is shown below.
 ## Tasks
 
 * UITask.py
-This task is responsibe for handling all REPL input for the romi as well as initializing the UART protocol for the HC-05 Bluetooth module. In our final implementation of our obstacle course
+
+This task is responsibe for handling all REPL input for the romi as well as initializing the UART protocol for the HC-05 Bluetooth module. In our final implementation of our obstacle course, we use UITask to start the robot at the start of the course and to pause the robot if necessary.
 
 * MotorTask.py
+
 This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal.
+
 * IRTask.py
 
+This task class is responsible for reading data from the IR array, calculating the centroid and sum of the IR array, and putting said values into the share on a regular basis.
+
 [* BrainsTask.py]([url](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/BrainsTask.py))
+
 This task is responsible for handling all of the important track logic as well as switching between driving modes.
-Track logic is handled by breaking the track up into 16 sections
-
-
-For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
+The two different driving modes handled by this task are Line following and Driving straight. Line following uses centroid data from the IR tasj
+Track logic is handled by breaking the track up into 16 sections (checkpoints), labeled alphabetically. For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
 ![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
 
 * IMUTask.py
-This task is responsible ofr handling 
+
+This task is responsible for regularly putting the Euler heading of the romi bot into the share.
 
 
 ## Classes
 
 * Bump
+
   This class handles bump sensor functionality. It initializes the pins used for both left and right sensors and toggles bstate if the bump sensor is pressed during an update.
   
 * Motor
+
    This class acts as a motor driver for the Romi bot. It initializes the timer of the PWM channels as well as the pins for SLP,DIR, and PWM, as well as setting the effort of the motor based on an input between -100 and 100.
 
 * Encoder
+
   This class acts as a driver and quadrature decoder for the encoders on the Romi motor. It initializes the encoder timer and pins for channels A and B, and calculates current velocity and position every update step.
 
 * IMUDriver
+
   This class acts as the driver for the BNO055 IMU. It initializes the IMU using the I2C protocol, and sets its operation mode to NDOF_FMC_OFF_MODE upon startup. It also returns the system calibration status bytes, Euler heading, and angular velocity about the Z axis.
 
 ## Conclusion
