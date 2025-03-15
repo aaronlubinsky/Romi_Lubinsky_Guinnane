@@ -9,16 +9,25 @@ Rev. Mar 15, 2025
 ## Table of Contents
 [Romi Design](#romi-design)<br>
 [Program Design and Structure](#program-design-and-structure)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[Tasks](#tasks)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[Classes](#classes)<br>
+[Conclusion](#conclusion)
 [Video Demonstration](#video-demonstration)<br>
 
 ## Romi Design
 
-To complete the obstacle course, we outfitted our Romi bot with a Pololu IR reflectance sensor to follow the lines on the track, an Adafruit BNO055 IMU to help the Romi drive straight in its current heading or turn to face a new heading, and a Pololu bump sensor to detect when the Romi has hit the wall. In addition to these sensors, the Romi was equipped with a HC-05 Bluetooth module to enable wireless operation of the Romi bot. Later on in the project, a circuit was added to the Romi to read the robot's battery voltage.
-To implement our
+To complete the obstacle course, we outfitted our Romi bot with a Pololu IR reflectance sensor to follow the lines on the track, an Adafruit BNO055 IMU to help the Romi drive straight in its current heading or turn to face a new heading, and a Pololu bump sensor to detect when the Romi has hit the wall. In addition to these sensors, the Romi was equipped with a HC-05 Bluetooth module to enable wireless operation of the Romi bot. Later on in the project, a circuit was added to the Romi to read the robot's battery voltage. Pictures of the Romi's final configuration are shown below.
 
 ![20250314_120230](https://github.com/user-attachments/assets/d6e9c733-55c5-4a1c-8662-09e5068ae85e)
+![romi_top](https://github.com/user-attachments/assets/308f10cb-2911-44a5-9b0c-88326dceb7a5)
+![romi_bottom](https://github.com/user-attachments/assets/451f89cc-94a4-4813-94c3-e40be3c8701d)
+![romi_back](https://github.com/user-attachments/assets/2e60e1f5-4f2f-4981-bcc5-2caad98fa46d)
 
-All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points between the IR and bump sensors, making 3D-printing a custom adapter unnecessary.
+![RomiTopAngle](https://github.com/user-attachments/assets/e2cdfcc9-a27a-4bcd-bf52-43aaf9b9fd85)
+![RomiBottomAngle](https://github.com/user-attachments/assets/68cf7f2e-1061-4f6f-8f93-5fc685c556da)
+
+
+All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points between the IR and bump sensors, making 3D-printing a custom adapter unnecessary. CAD Files of the robot have been included with accurate sensor placement.
 
 
 ### Bill of Materials
@@ -29,11 +38,10 @@ All of the sensors are mounted on the front of the Romi using standoffs due to c
 |Romi Power Distribution Board| 1 | Instructor Provided |
 |Romi Encoder Pair Kit | 1 | Instructor Provided |
 |Nucleo L476RG| 1 | Instructor Provided |
-|BNO055 IMU | 1 | Instructor Provided |
+| Adafruit BNO055 Absolute Orientation Sensor | 1 | Instructor Provided |
 | QTR-MD-08A Reflectance Sensor Array: 8-Channel, 8mm Pitch, Analog Output | 1 | [Pololu Store](https://www.pololu.com/product/4248)<br> |
 | Right Bumper Switch Assembly for Romi/TI-RSLK MAX | 1 | [Pololu Store](https://www.pololu.com/product/3674)<br> |
 | Left Bumper Switch Assembly for Romi/TI-RSLK MAX | 1 | [Pololu Store](https://www.pololu.com/product/3673)<br> |
-| Adafruit BNO055 Absolute Orientation Sensor | 1 | Instructor Provided |
 | HC-05 Wirelesss Bluetooth Module | 1 | [Amazon](https://www.amazon.com/dp/B01MQKX7VP)<br> |
 
 
@@ -42,23 +50,25 @@ All of the sensors are mounted on the front of the Romi using standoffs due to c
 ### IR Reflectance Sensor
 ![image](https://a.pololu-files.com/picture/0J9136.600x480.jpg?21d47be8d4bfa4f6d290741354a839ba)
 
-To follow the lines on the obstacle course, we used the Pololu QTR-MD-08A Reflectance Sensor Array. We chose this sensor 
+To follow the lines on the obstacle course, we used the Pololu QTR-MD-08A Reflectance Sensor Array. We chose this sensor because it had a sensible amount of IR Sensors and was long, but not long enough to require a custom adapter to mount on the Romi.
 While it can easily keep track of wide turns on the obstacle course, testing revealed that the small size of the sensor was limiting how fast we could take sharp corners, especially at the start of the course.
 
 
 ### Bump Sensor
 ![image](https://a.pololu-files.com/picture/0J10203.600x480.jpg?793c0b893bd0ac5f64733eee603cd0fd)
 
-To allow our robot to detect bumping the wall at the end of the course, a pair of pololu bump sensors were utilized. While all 3 sensors on each units were originally planned to be implemented, testing found that having the front sensor working worked just fine as it was.
+To allow our robot to detect bumping the wall at the end of the course as well as protect the IR array from impacts, a pair of Pololu bump sensors were utilized. While all 3 sensors on each units were originally planned to be implemented, testing found that having the front sensor working worked just fine as it was.
 
 ### BNO055 IMU
+![image](https://cdn-learn.adafruit.com/assets/assets/000/024/585/medium800/sensors_2472_top_ORIG.jpg?1429638074)
 
+To allow our robot to use heading data to aid in navigation, we used the Adafruit BNO055 IMU.
 
 ### Wiring Diagram
 Below is the final revision of our wiring diagram of our Nucleo Board.
 ![image](https://github.com/user-attachments/assets/8ae91c52-fd46-442b-8d40-f865ef19f9c3)
 
-To detect the Battery Level, the following circuit is constructed and read through ADC on PB0
+To detect the Battery Level, the following circuit is constructed and read through ADC on PB0.
 ![image](https://github.com/user-attachments/assets/5dc78c35-1b31-4a9f-9368-63c8d1c1bc0d)
 
 
@@ -99,8 +109,11 @@ This task class is responsible for reading data from the IR array, calculating t
 [* BrainsTask.py]([url](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/BrainsTask.py))
 
 This task is responsible for handling all of the important track logic as well as switching between driving modes.
-The two different driving modes handled by this task are Line following and Driving straight. Line following uses centroid data from the IR tasj
+The two different driving modes handled by this task are line following and driving straight. 
+Line following uses centroid data from the IR task and a PID loop to control the Romi as it follows lines throughout the track. This is the driving mode utilized throughout the majority of the obstacle course, mostly up to checkpoint 4.
+Driving straight uses Euler angle data from the IMU task and a PID loop to have the romi face a desired heading and drive straight. This driving mode is used primarily in the second half of the course to the finish line.
 Track logic is handled by breaking the track up into 16 sections (checkpoints), labeled alphabetically. For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
+
 ![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
 
 * IMUTask.py
