@@ -146,7 +146,7 @@ class Brains:
             
             
             
-            elif self.BrainState == 2: #GO NORTH
+            elif self.BrainState == 2: #Adjust heading to match HeadingDatum
                
                 '''This state is the 'simple, line following PID loop' for the Romi's YAW RATE as a whole'''
                 self.error = ((self.Heading.get())/16)#in degrees
