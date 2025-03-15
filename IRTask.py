@@ -6,7 +6,7 @@ class IRTask:
     def __init__(self, task_label):
 
 
-        self.IRPinOut = [Pin.cpu.C4, Pin.cpu.C4, Pin.cpu.B1, Pin.cpu.C5, Pin.cpu.A6, Pin.cpu.A7, Pin.cpu.C2, Pin.cpu.C3] #List of nucleo pins for each sensor from index 1 - 15
+        self.IRPinOut = [Pin.cpu.C4, Pin.cpu.C4, Pin.cpu.B1, Pin.cpu.C5, Pin.cpu.A6, Pin.cpu.A7, Pin.cpu.C2, Pin.cpu.C3] #List of nucleo pins for each sensor from index 1 - 15 (odd only used)
         self.IR_Array_Object = [] #Empty list to be filled with IR objects
         for pin in self.IRPinOut:
             self.IR_Array_Object.append(IRDriver(pin)) #Fill list object with objects of individual IR sensors
@@ -15,7 +15,7 @@ class IRTask:
         if cal_IR_question == 'N':
             self.IRblack = [3010, 3005, 2766, 2722, 2735, 2703, 2891, 2979]
             self.IRwhite = [489, 490, 275, 265, 265, 261, 280, 308]
-            #taken on a clear sky day @8:30AM Feb 25. Lights on 
+            #taken on a clear sky day @8:30AM Feb 25. Classroom lights on 
         else:
           pass  
 
@@ -39,12 +39,10 @@ class IRTask:
             centroid = centroid_numer/centroid_den
             IRcentroid.put(int(centroid))
             IRsum.put(int(IRsum))
-            #print(f"{IRReadings} CENTROID: {centroid}")
-            #print(centroid)
             
             yield
              
-    def callibrateIR(self):
+    def callibrateIR(self): #call this function (blocking code) when user selects new calibration 
         input('Press ENTER to read BLACK')
         self.IRblack = list(map(lambda x: x.getValue() , self.IR_Array_Object))
         print(self.IRblack)
