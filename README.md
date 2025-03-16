@@ -147,15 +147,14 @@ Track logic is handled by breaking the track up into 16 sections (checkpoints), 
 |---|---|---|
 |0|N/A|UI_stop.get == 0|
 |A|Line follow|abs(delta_Heading) > 80|
-|B|Drive straight|(distTraveled.get)/
-|C
-|D
-|E
-
-|H
-|I
-|J
-|K
+|B|Drive straight|(distTraveled.get) > 0.60 |
+|C | Line follow | (delta_Heading) > 178|
+|D | Drive straight | (distTraveled.get) > 0.60 |
+|E | Line follow | (distTraveled.get) > 0.60 and (delta_Heading) < 5 |
+|H | Drive straight | (distTraveled.get) > 2.50 |
+|I | Pivot | yieldCount > 14 |
+|J | Drive straight | (distTraveled.get) > 0.5 |
+|K | Line Follow | bumpSensor TRUE |
 |L
 |M
 |N
