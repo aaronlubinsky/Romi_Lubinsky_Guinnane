@@ -138,23 +138,7 @@ class Brains:
                     self.checkpoint = 'H' #skip checkpoint F and G
                     distanceDatum = distTraveled.get()
                     #self.headingDatum -= self.headingDatum - (90*16)
-                '''
-            elif self.checkpoint == 'F': #DRIVE STRAIGHT THROUGH CROSS 
-                print('CHECKPOINT F')
-                self.BrainState = self.driveStraight
-                romiSetSpeed.put(50)
-                if (self.distanceTraveled - distanceDatum) > 100: #GEUSS
-                    self.checkpoint = 'G'
-                
-            elif self.checkpoint == 'G':
-                print('CHECKPOINT G')
-                self.BrainState = self.linefollow
-                romiSetSpeed.put(50)
-                if (self.IRsum) < 1000: #GEUSS
-                    self.centroid = 'H'
-                    headingDatum = Heading.get() #recallibrate heading datum
-                    distanceDatum = 0
-                ''' 
+            
             elif self.checkpoint == 'H': #DRIVE STRAIGHT THROUGH GRID
                 # Compute the heading change correctly considering wraparound
                 current_heading = Heading.get() / 16  # Convert raw value to degrees
