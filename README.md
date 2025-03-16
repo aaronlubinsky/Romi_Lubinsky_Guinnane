@@ -25,13 +25,14 @@ To complete the obstacle course, we outfitted our Romi bot with a Pololu IR refl
 </p>
 
 
-<p align="left">
-  <img src="https://github.com/user-attachments/assets/451f89cc-94a4-4813-94c3-e40be3c8701d" width="450">
-  <img src="https://github.com/user-attachments/assets/2e60e1f5-4f2f-4981-bcc5-2caad98fa46d" width="450">
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/451f89cc-94a4-4813-94c3-e40be3c8701d" width="475">
+  <img src="https://github.com/user-attachments/assets/2e60e1f5-4f2f-4981-bcc5-2caad98fa46d" width="475">
 </p>
 
+
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/308f10cb-2911-44a5-9b0c-88326dceb7a5" width="500">
+  <img src="https://github.com/user-attachments/assets/d948383d-464e-46e3-815b-8f34cd14e689" width="500">
 </p>
 
 **CAD Renders**
