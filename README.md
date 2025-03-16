@@ -1,6 +1,8 @@
 # Romi_Lubinsky_Guinane
 ME405 Term Project
 
+Aaron Lubinsky
+Owen Guinane
 
 W25 Cal Poly ME405
 
@@ -27,7 +29,7 @@ To complete the obstacle course, we outfitted our Romi bot with a Pololu IR refl
 ![RomiBottomAngle](https://github.com/user-attachments/assets/68cf7f2e-1061-4f6f-8f93-5fc685c556da)
 
 
-All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points between the IR and bump sensors, making 3D-printing a custom adapter unnecessary. CAD Files of the robot have been included with accurate sensor placement.
+All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points on the chassis between the IR and bump sensors, making 3D-printing a custom adapter unnecessary. CAD Files of the robot have been included with accurate sensor placement.
 
 
 ### Bill of Materials
@@ -102,19 +104,38 @@ This task is responsibe for handling all REPL input for the romi as well as init
 
 This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal.
 
+
 * IRTask.py
 
-This task class is responsible for reading data from the IR array, calculating the centroid and sum of the IR array, and putting said values into the share on a regular basis.
+This task class is responsible for reading data from the IR array, calculating the centroid and sum of the IR array, and putting these values into the share on a regular basis.
 
-[* BrainsTask.py]([url](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/BrainsTask.py))
+[BrainsTask.py]([url](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/BrainsTask.py))
 
 This task is responsible for handling all of the important track logic as well as switching between driving modes.
 The two different driving modes handled by this task are line following and driving straight. 
 Line following uses centroid data from the IR task and a PID loop to control the Romi as it follows lines throughout the track. This is the driving mode utilized throughout the majority of the obstacle course, mostly up to checkpoint 4.
-Driving straight uses Euler angle data from the IMU task and a PID loop to have the romi face a desired heading and drive straight. This driving mode is used primarily in the second half of the course to the finish line.
-Track logic is handled by breaking the track up into 16 sections (checkpoints), labeled alphabetically. For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
+Driving straight uses Euler angle data from the IMU task and a PID loop to have the romi face a desired heading and drive straight. This driving mode is used primarily in the second half of the course to the finish line. Additionally, the drive straight driving mode is also used to pivot in place by setting the Romi's forward speed to 0 and updating the desired heading. 
+
+Track logic is handled by breaking the track up into 16 sections (checkpoints), labeled alphabetically. Each of these checkpoints has criteria to determine if it has crossed into a new checkpoint or not. for For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
 
 ![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
+|Checkpoint|Driving Mode||Criterion|
+|---|---|---|
+|0|N/A|UI_stop.get == 0|
+|A
+|B
+|C
+|D
+|E
+
+|H
+|I
+|J
+|K
+|L
+|M
+|N
+|O
 
 * IMUTask.py
 
@@ -137,11 +158,11 @@ This task is responsible for regularly putting the Euler heading of the romi bot
 
 * IMUDriver
 
-  This class acts as the driver for the BNO055 IMU. It initializes the IMU using the I2C protocol, and sets its operation mode to NDOF_FMC_OFF_MODE upon startup. It also returns the system calibration status bytes, Euler heading, and angular velocity about the Z axis.
+  This class acts as the driver for the BNO055 IMU. It initializes the IMU using the I2C protocol, and sets its operation mode to NDOF_FMC_OFF_MODE upon startup. It returns the system calibration status bytes, Euler heading, and angular velocity about the Z axis.
 
 ## Conclusion
 
-While we are satisfied with the Romi's performance on the track, there are still a lot of improvements that can be made to help the robot run more reliably. For instance, A major issue with the Romi bot was that 
+While we are satisfied with the Romi's performance on the track, there are still a lot of improvements that can be made to help the robot run more reliably. For instance, A major issue with the Romi bot was that performance was very dependent on battery charge. While we were able to construct a circuit to read of the Romi's voltage,
 
 
 ## Video Demonstration
