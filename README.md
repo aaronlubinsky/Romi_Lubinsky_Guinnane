@@ -26,8 +26,8 @@ To complete the obstacle course, we outfitted our Romi bot with a Pololu IR refl
 
 
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/451f89cc-94a4-4813-94c3-e40be3c8701d" width="500">
-  <img src="https://github.com/user-attachments/assets/2e60e1f5-4f2f-4981-bcc5-2caad98fa46d" width="500">
+  <img src="https://github.com/user-attachments/assets/451f89cc-94a4-4813-94c3-e40be3c8701d" width="450">
+  <img src="https://github.com/user-attachments/assets/2e60e1f5-4f2f-4981-bcc5-2caad98fa46d" width="450">
 </p>
 
 <p align="center">
@@ -143,6 +143,10 @@ Track logic is handled by breaking the track up into 16 sections (checkpoints), 
 
 ![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c28877ee-83b6-4d41-ba24-39afc8a0430e" width="700">
+</p>
+
 |Checkpoint|Driving Mode|Criterion|
 |---|---|---|
 |0|N/A|UI_stop.get == 0|
@@ -163,7 +167,10 @@ Track logic is handled by breaking the track up into 16 sections (checkpoints), 
 |Q | Pivot | yieldCount > 16 |
 |R | Line follow | (distTraveled.get) > 1.7 |
 |Z | Stop | N/A |
+
+
 * **IMUTask.py**
+
 
 This task is responsible for regularly putting the Euler heading of the romi bot into the share.
 
