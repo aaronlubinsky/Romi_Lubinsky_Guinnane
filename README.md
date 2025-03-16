@@ -155,11 +155,14 @@ Track logic is handled by breaking the track up into 16 sections (checkpoints), 
 |I | Pivot | yieldCount > 14 |
 |J | Drive straight | (distTraveled.get) > 0.5 |
 |K | Line Follow | bumpSensor TRUE |
-|L
-|M
-|N
-|O
-
+|L | Drive Backwards | (distTraveled.get) < -0.3 |
+|M | Pivot | yieldCount > 14 |
+|N | Drive straight | (distTraveled.get) > 1.6 |
+|O | Pivot | yieldCount > 14 |
+|P | Drive straight | (distTraveled.get) > 1.2 |
+|Q | Pivot | yieldCount > 16 |
+|R | Line follow | (distTraveled.get) > 1.7 |
+|Z | Stop | N/A |
 * **IMUTask.py**
 
 This task is responsible for regularly putting the Euler heading of the romi bot into the share.
