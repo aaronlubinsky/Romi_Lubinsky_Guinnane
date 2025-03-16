@@ -103,6 +103,7 @@ This task is responsibe for handling all REPL input for the romi as well as init
 * MotorTask.py
 
 This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal.
+![MotorTask_FSM](https://github.com/user-attachments/assets/6ceb8a18-f858-4d7c-9366-ad0111710b1b)
 
 
 * IRTask.py
@@ -122,8 +123,8 @@ Track logic is handled by breaking the track up into 16 sections (checkpoints), 
 |Checkpoint|Driving Mode||Criterion|
 |---|---|---|
 |0|N/A|UI_stop.get == 0|
-|A
-|B
+|A|Line follow|abs(delta_Heading) > 80|
+|B|Drive straight|(distTraveled.get)/
 |C
 |D
 |E
