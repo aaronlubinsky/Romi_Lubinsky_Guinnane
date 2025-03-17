@@ -1,3 +1,5 @@
+#This file is provided by Professor Refvem as a guide to set up the HC Bluetooth module
+
 # Instructions for usage:
 # 1) Use a Nucleo with nothing else plugged into it.
 # 2) Disconnect the USB cable from your computer but
