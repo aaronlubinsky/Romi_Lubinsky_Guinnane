@@ -9,12 +9,17 @@ W25 Cal Poly ME405
 Rev. Mar 15, 2025
 
 ## Table of Contents
+[Introduction](#introduction)
 [Romi Design](#romi-design)<br>
 [Program Design and Structure](#program-design-and-structure)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[Tasks](#tasks)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[Classes](#classes)<br>
 [Conclusion](#conclusion)<br>
 [Video Demonstration](#video-demonstration)<br>
+
+## Introduction
+For our ME405 Term Project, we were tasked with constructing and programming a Romi robot to navigate an obstacle course. This obstacle course features sharp and gentle turns, dashed and crosshatched lines, diamonds, a grid, a wall to navigate around, and cups which can be knocked out of their areas for a time bonus. To accomplish this task, we outfitted our romi with an IR sensor array, an IMU, and a bump sensor to allow us to follow lines on the track, have the romi drive straight and pivot, and detect when it has bumped into the wall at the end of the course.
+
 
 ## Romi Design
 
@@ -41,7 +46,7 @@ To complete the obstacle course, we outfitted our Romi bot with a Pololu IR refl
   <img src="https://github.com/user-attachments/assets/68cf7f2e-1061-4f6f-8f93-5fc685c556da" width="500">
 </p>
 
-All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points on the chassis between the IR and bump sensors, making 3D-printing a custom adapter unnecessary. Accessories such as the HC-05 Bluetooth Module and the Voltage reader circuit were taped on to the romi. CAD Files of the robot have been included with accurate sensor placement.
+All of the sensors are mounted on the front of the Romi using standoffs due to compatible mounting points on the chassis between the IR and bump sensors, making 3D-printing a custom adapter unnecessary. Accessories such as the HC-05 Bluetooth Module and the Voltage reader circuit were taped on to the Romi. CAD Files of the robot have been included with accurate sensor placement.
 
 
 ### Bill of Materials
@@ -57,7 +62,6 @@ All of the sensors are mounted on the front of the Romi using standoffs due to c
 | Right Bumper Switch Assembly for Romi/TI-RSLK MAX | 1 | [Pololu Store](https://www.pololu.com/product/3674)<br> |
 | Left Bumper Switch Assembly for Romi/TI-RSLK MAX | 1 | [Pololu Store](https://www.pololu.com/product/3673)<br> |
 | HC-05 Wirelesss Bluetooth Module | 1 | [Amazon](https://www.amazon.com/dp/B01MQKX7VP)<br> |
-
 
 
 
@@ -82,7 +86,7 @@ To allow our robot to detect bumping the wall at the end of the course as well a
 <p align="center">
   <img src="https://cdn-learn.adafruit.com/assets/assets/000/024/585/medium800/sensors_2472_top_ORIG.jpg?1429638074" width="500">
 </p>
-To allow our robot to use heading data to aid in navigation, we used the Adafruit BNO055 IMU.
+To allow our robot to use heading data to aid in navigation, we used the Adafruit BNO055 IMU. In the final iteration of our robot's program, it operates in NDOF_FMC_OFF_MODE, which provides absolute orientation data from the accelerometer, magnetometer, and gyrometer.
 
 ### Wiring Diagram
 Below is the final revision of our wiring diagram of our Nucleo Board.
@@ -119,12 +123,16 @@ The task diagram for these tasks is shown below.
 
 This task is responsibe for handling all REPL input for the romi as well as initializing the UART protocol for the HC-05 Bluetooth module. In our final implementation of our obstacle course, we use UITask to start the robot at the start of the course and to pause the robot if necessary.
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1dc6cc52-e5ec-42b0-8df0-d165758618ce" width="400">
+</p>
+
 * **MotorTask.py**
 
 This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6ceb8a18-f858-4d7c-9366-ad0111710b1b" width="400">
+  <img src="https://github.com/user-attachments/assets/9b9ac1f5-8cc1-4bc2-b94e-34fc743858a1" width="400">
 </p>
 
 
@@ -140,12 +148,26 @@ The two different driving modes handled by this task are line following and driv
 Line following uses centroid data from the IR task and a PID loop to control the Romi as it follows lines throughout the track. This is the driving mode utilized throughout the majority of the obstacle course, mostly up to checkpoint 4.
 Driving straight uses Euler angle data from the IMU task and a PID loop to have the romi face a desired heading and drive straight. This driving mode is used primarily in the second half of the course to the finish line. Additionally, the drive straight driving mode is also used to pivot in place by setting the Romi's forward speed to 0 and updating the desired heading. 
 
-Track logic is handled by breaking the track up into 16 sections (checkpoints), labeled alphabetically. Each of these checkpoints has criteria to determine if it has crossed into a new checkpoint or not. for For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
+Track logic is handled by breaking the track up into 16 sections (checkpoints), labeled alphabetically. Each of these checkpoints has criteria to determine if it has crossed into a new checkpoint or not. Each checkpoint has four main functions:
+1. Set the speed of the Romi bot
+2. Set the driving mode
+3. Check criterion for next checkpoint
+4. If criterion is met, update parameters for next checkpoint.
+
+An example of one checkpoint is shown below.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/04fd431c-7daa-4911-85b8-34022989204a" width="700">
+</p>
+
+
+For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
 
 ![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
 
+
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c28877ee-83b6-4d41-ba24-39afc8a0430e" width="700">
+  <img src="https://github.com/user-attachments/assets/66764854-aa4b-49ef-a120-cfaee3cd4d36" width="700">
 </p>
 
 |Checkpoint|Driving Mode|Criterion|
@@ -155,7 +177,7 @@ Track logic is handled by breaking the track up into 16 sections (checkpoints), 
 |B|Drive straight|(distTraveled.get) > 0.60 |
 |C | Line follow | (delta_Heading) > 178|
 |D | Drive straight | (distTraveled.get) > 0.60 |
-|E | Line follow | (distTraveled.get) > 0.60 and (delta_Heading) < 5 |
+|E | Line follow | (distTraveled.get) > 10.5 and (delta_Heading) < 5 |
 |H | Drive straight | (distTraveled.get) > 2.50 |
 |I | Pivot | yieldCount > 14 |
 |J | Drive straight | (distTraveled.get) > 0.5 |
@@ -196,7 +218,7 @@ This task is responsible for regularly putting the Euler heading of the romi bot
 
 ## Conclusion
 
-While we are satisfied with the Romi's performance on the track, there are still a lot of improvements that can be made to help the robot run more reliably. For instance, A major issue with the Romi bot was that performance was very dependent on battery charge. While we were able to construct a circuit to read of the Romi's voltage,
+While we are satisfied with the Romi's performance on the track, there are still a lot of improvements that can be made to help the robot run more reliably. For instance, A major issue with the Romi bot was that performance was very dependent on battery charge level. While we were able to construct a circuit to read of the Romi's voltage, we were not able to code in a way to compensate PID gains and motor effort for dropping battery voltage.  
 
 
 ## Video Demonstration
