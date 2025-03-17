@@ -9,7 +9,7 @@ W25 Cal Poly ME405
 Rev. Mar 15, 2025
 
 ## Table of Contents
-[Introduction](#introduction)
+[Introduction](#introduction)<br>
 [Romi Design](#romi-design)<br>
 [Program Design and Structure](#program-design-and-structure)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[Tasks](#tasks)<br>
@@ -119,29 +119,28 @@ The task diagram for these tasks is shown below.
 
 ## Tasks
 
-* **UITask.py**
+* [**UITask.py**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/UITask.py)
 
-This task is responsibe for handling all REPL input for the romi as well as initializing the UART protocol for the HC-05 Bluetooth module. In our final implementation of our obstacle course, we use UITask to start the robot at the start of the course and to pause the robot if necessary.
+This task is responsibe for handling all REPL input for the romi as well as initializing the UART protocol for the HC-05 Bluetooth module. In our final implementation of our obstacle course, we use UITask to start the robot at the start of the course and to pause the robot if necessary. Below is the state-transition diagram for this task.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/1dc6cc52-e5ec-42b0-8df0-d165758618ce" width="400">
 </p>
 
-* **MotorTask.py**
+* [**MotorTask.py**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/MotorTask.py)
 
-This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal.
+This task class is initialized twice within main.py: one for the left motor and again for the right. Within the task, a PID loop is cycled to match the motor speed, as detected by an encoder, to the desired motor velocity communicated via a task share variable. The need for this PID loop arises from the difference between the physical motors. While indistinguishable at first, the difference became evident when sending identical PWM to both motors. The right motor had a repeatable tendency to outpace the left. With the PID implemented, each PWM is adjusted so that Romi drives straight when desired left and right motor speeds are equal. Below is the state-transition diagram for this task.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/9b9ac1f5-8cc1-4bc2-b94e-34fc743858a1" width="400">
 </p>
 
 
-* **IRTask.py**
+* [**IRTask.py**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/IRTask.py)
 
 This task class is responsible for reading data from the IR array, calculating the centroid and sum of the IR array, and putting these values into the share on a regular basis.
 
-* **BrainsTask.py**
-[BrainsTask.py]([url](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/BrainsTask.py))
+* [**BrainsTask.py**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/BrainsTask.py)
 
 This task is responsible for handling all of the important track logic as well as switching between driving modes.
 The two different driving modes handled by this task are line following and driving straight. 
@@ -161,10 +160,9 @@ An example of one checkpoint is shown below.
 </p>
 
 
-For ease of reference, a diagram of the obstacle course and corresponding checkpoints are shown below.
+For ease of reference, a diagram of the obstacle course and corresponding checkpoints, the task-state diagram, and a table of checkpoints and corresponding drivng mode and criterions are shown below.
 
 ![layer-MC0](https://github.com/user-attachments/assets/362de588-184d-4373-a530-dd08862760d2)
-
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/66764854-aa4b-49ef-a120-cfaee3cd4d36" width="700">
@@ -192,7 +190,7 @@ For ease of reference, a diagram of the obstacle course and corresponding checkp
 |Z | Stop | N/A |
 
 
-* **IMUTask.py**
+* [**IMUTask.py**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/IMUTask.py)
 
 
 This task is responsible for regularly putting the Euler heading of the romi bot into the share.
@@ -200,25 +198,25 @@ This task is responsible for regularly putting the Euler heading of the romi bot
 
 ## Classes
 
-* **Bump**
+* [**Bump**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/bump.py)
 
   This class handles bump sensor functionality. It initializes the pins used for both left and right sensors and toggles bstate if the bump sensor is pressed during an update.
   
-* **Motor**
+* [**Motor**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/motor.py)
 
    This class acts as a motor driver for the Romi bot. It initializes the timer of the PWM channels as well as the pins for SLP,DIR, and PWM, as well as setting the effort of the motor based on an input between -100 and 100.
 
-* **Encoder**
+* [**Encoder**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/encoder.py)
 
   This class acts as a driver and quadrature decoder for the encoders on the Romi motor. It initializes the encoder timer and pins for channels A and B, and calculates current velocity and position every update step.
 
-* **IMUDriver**
+* [**IMUDriver**](https://github.com/aaronlubinsky/Romi_Lubinsky_Guinnane/blob/main/imudriver.py)
 
   This class acts as the driver for the BNO055 IMU. It initializes the IMU using the I2C protocol, and sets its operation mode to NDOF_FMC_OFF_MODE upon startup. It returns the system calibration status bytes, Euler heading, and angular velocity about the Z axis.
 
 ## Conclusion
 
-While we are satisfied with the Romi's performance on the track, there are still a lot of improvements that can be made to help the robot run more reliably. For instance, A major issue with the Romi bot was that performance was very dependent on battery charge level. While we were able to construct a circuit to read of the Romi's voltage, we were not able to code in a way to compensate PID gains and motor effort for dropping battery voltage.  
+While we are satisfied with the Romi's performance on the track, there are still a lot of improvements that can be made to help the robot run more reliably. For instance, A major issue with the Romi bot was that performance was very dependent on battery charge level. We we were able to construct a circuit to read of the Romi's voltage, we were not able to code in a way to compensate PID gains and motor effort for dropping battery voltage. Another issue that plagued our robot during testing was the dashed line section of the course, where the Romi would not correct itself enough to follow the dashes straight through. This ended up causing the Romi to veer to the left, outside of the range of the IR sensor array, causing it to lose the line and kill the run as a result. While measures were taken to remedy this by increasing Kp to be more aggressive during the line, it was not enough the morning of demonstration. This could be remedied by making Kp more agressive through that section, battery voltage compensation, or by switching back the drive straight mode for that checkpoint with some more tweaks to the desired heading. Apart from these two issues, the Romi performed consistently for most of the runs. We were able to have the Romi complete the obstacle course using proportional-only control, with a Kp of 0.45 driving the PID loops for both driving modes. In addition, the pivoting maneuvers of the Romi bot were performed by setting speed to zero and using the drive straight mode to have the romi face a desired heading. 
 
 
 ## Video Demonstration
