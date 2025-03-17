@@ -107,7 +107,7 @@ Our Romi utilizes cooperative multitasking to cycle between relevant tasks at as
 | LeftMotorTaskObj.drive |2| 4 |10 |Handles Effort input to the left motor|
 | RightMotorTaskObj.drive |3| 4 |10 |Handles Effort input to the right motor|
 | IRTaskObj.getIRArray | 4| 5 |50 |Frequently returns data from the IR sensor array |
-| BrainsTaskObj.run |5 | 2 |50 |Handles the driving mode PID loops driving the |
+| BrainsTaskObj.run |5 | 2 |50 |Handles the driving mode PID loops |
 |BrainsTaskObj.track | 6 | 3 |50 | Handles important track logic that sets speed and driving mode of the Romi |
 |IMUTaskObj.EulerAngle| 7 | 3 |50 | Frequently returns Euler angle data from the IMU |
 |IMUTaskObj.AngularVelo| 8 | 3 |50 | Frequently returns Angular velocity data from the IMU|
