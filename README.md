@@ -25,14 +25,15 @@ For our ME405 Term Project, we were tasked with constructing and programming a R
 
 To complete the obstacle course, we outfitted our Romi bot with a Pololu IR reflectance sensor to follow the lines on the track, an Adafruit BNO055 IMU to help the Romi drive straight in its current heading or turn to face a new heading, and a Pololu bump sensor to detect when the Romi has hit the wall. In addition to these sensors, the Romi was equipped with a HC-05 Bluetooth module to enable wireless operation of the Romi bot. Later on in the project, a circuit was added to the Romi to read the robot's battery voltage. Pictures of the Romi's final configuration are shown below.
 
+**Final Romi Configuration**
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d6e9c733-55c5-4a1c-8662-09e5068ae85e" width="1000">
 </p>
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/451f89cc-94a4-4813-94c3-e40be3c8701d" width="475">
-  <img src="https://github.com/user-attachments/assets/2e60e1f5-4f2f-4981-bcc5-2caad98fa46d" width="475">
+  <img src="https://github.com/user-attachments/assets/451f89cc-94a4-4813-94c3-e40be3c8701d" width="425">
+  <img src="https://github.com/user-attachments/assets/2e60e1f5-4f2f-4981-bcc5-2caad98fa46d" width="425">
 </p>
 
 
